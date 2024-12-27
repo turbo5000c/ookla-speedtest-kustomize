@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: speedtest-tracker
+  labels:
+    app: speedtest-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: speedtest-tracker
+  template:
+    metadata:
+      labels:
+        app: speedtest-tracker
+    spec:
+      containers:
+        - name: speedtest-tracker
+          image: lscr.io/linuxserver/speedtest-tracker:latest
+          envFrom:
+            - configMapRef:
+                name: speedtest-tracker-config
+            - secretRef:
+                name: speedtest-tracker-db-secret
+          resources:
+            requests:
+              memory: "128Mi"  # Minimum memory requested
+              cpu: "100m"      # Minimum CPU requested
+            limits:
+              memory: "256Mi"  # Maximum memory allowed
+              cpu: "500m"      # Maximum CPU allowed
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: config-volume
+          hostPath:
+            path: /path/to/speedtest-tracker/data
+            type: Directory
+      restartPolicy: Always
