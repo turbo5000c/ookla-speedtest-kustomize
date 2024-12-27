@@ -36,7 +36,6 @@ spec:
             - containerPort: 80
       volumes:
         - name: config-volume
-          hostPath:
-            path: /path/to/speedtest-tracker/data
-            type: Directory
+          persistentVolumeClaim:
+            claimName: speedtest-tracker-pvc
       restartPolicy: Always
