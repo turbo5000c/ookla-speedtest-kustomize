@@ -5,6 +5,11 @@ metadata:
   labels:
     app: speedtest-tracker
 spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   replicas: 1
   selector:
     matchLabels:
