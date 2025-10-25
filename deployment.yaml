@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: speedtest-tracker
-          image: lscr.io/linuxserver/speedtest-tracker:1.6.8
+          image: lscr.io/linuxserver/speedtest-tracker:1.6.9
           envFrom:
             - configMapRef:
                 name: speedtest-tracker-config
