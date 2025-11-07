@@ -5,12 +5,9 @@ metadata:
   labels:
     app: speedtest-tracker
 spec:
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: speedtest-tracker
@@ -19,6 +16,7 @@ spec:
       labels:
         app: speedtest-tracker
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
         - name: speedtest-tracker
           image: lscr.io/linuxserver/speedtest-tracker:1.7.1
@@ -27,20 +25,19 @@ spec:
                 name: speedtest-tracker-config
             - secretRef:
                 name: speedtest-tracker-db-secret
+          ports:
+            - containerPort: 80
           resources:
             requests:
-              memory: "128Mi"  # Minimum memory requested
-              cpu: "100m"      # Minimum CPU requested
+              cpu: "100m"
+              memory: "128Mi"
             limits:
-              memory: "256Mi"  # Maximum memory allowed
-              cpu: "500m"      # Maximum CPU allowed
+              cpu: "500m"
+              memory: "256Mi"
           volumeMounts:
             - name: config-volume
               mountPath: /config
-          ports:
-            - containerPort: 80
       volumes:
         - name: config-volume
           persistentVolumeClaim:
             claimName: speedtest-tracker-pvc
-      restartPolicy: Always
