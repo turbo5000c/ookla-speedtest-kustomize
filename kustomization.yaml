@@ -3,7 +3,7 @@ namespace: speedtest-tracker
 kind: Kustomization
 resources:
 #  - namespace.yaml
-  - configmap.yaml
+#  - configmap.yaml
 #  - secret.yaml
   - deployment.yaml
   - pvc.yaml
